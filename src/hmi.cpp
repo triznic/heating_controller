@@ -1,7 +1,8 @@
 #include "hmi.h"
 #include "temp_meas.h"
 #include <EEPROM.h>
-#include <LiquidCrystal.h>
+// #include <LiquidCrystal.h>
+#include <LCD_I2C.h>
 #include <Keypad.h>
 // --- Contants -----------------------------------------
 #define TEMP_REQ_SMALL_LOOP_ADD     0
@@ -38,8 +39,9 @@ byte colPins[COLS] = {39, 41, 43, 45}; // piny sloupců, pamatujte na zleva dopr
 Keypad myKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
 // --- Local Variable - LCD --------------------------------------------
-const int rs = 34, en = 32, d4 = 28, d5 = 26, d6 = 24, d7 = 22;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+// const int rs = 34, en = 32, d4 = 28, d5 = 26, d6 = 24, d7 = 22;
+// LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+LCD_I2C lcd(0x27, 16, 2); // Default address of most PCF8574 modules, change according
 String inStr = "";
 float reqBigLoop = 0;
 float reqSmallLoop = 0;
@@ -81,22 +83,30 @@ HMIstates_E currHmiState;
 void hmi_init(void)
 {
   // set up the LCD's number of columns and rows:
-  lcd.begin(16, 2);
-  lcd.print(" Heating system ");
+  lcd.begin();
+  lcd.backlight();
+  lcd.print(F(" Heating system "));
   lcd.setCursor(0, 1);
-  lcd.print("---Made by LT---");
+  lcd.print(F("---Made by LT---"));
   delay(2000);
   lcd.clear();
-  lcd.print("Loading.");
-  delay(800);
-  lcd.write(".");
-  delay(800);
-  lcd.write(".");
-  delay(800);
-  lcd.write(".");
+  lcd.print(F("Loading."));
   delay(800);
   lcd.clear();
   
+  // while(1)
+  // {
+  //   readKey = myKeypad.getKey();
+
+    
+    
+  //   if (readKey){
+  //     Serial.println(readKey);
+  //     lcd.clear();
+  //     lcd.print(readKey);
+  //   }
+  // }
+
   currHmiState = (HMIstates_E)0;
   hmiStates[currHmiState].fun_ptr();
 
@@ -111,26 +121,30 @@ void hmi_process(void)
     case HMI_TEMP_PRIVOD: 
     {
       readKey = myKeypad.getKey();
-      switch(readKey)
+      if (readKey)
       {
-        case 'A': lcd.write("A");break; 
-        case 'B': lcd.write("B"); break; 
-        case 'C': lcd.write("C"); break; 
-        case 'D': lcd.write("D"); break; 
-        case '0': break; 
-        case '1': currHmiState = HMI_TEMP_PRIVOD;         break; 
-        case '2': currHmiState = HMI_TEMP_SPIATOCKA;      break; 
-        case '3': currHmiState = HMI_TEMP_PEC;            break; 
-        case '4': currHmiState = HMI_TEMP_NADRZ_TOP;      break; 
-        case '5': currHmiState = HMI_TEMP_NADRZ_BOT;      break; 
-        case '6': currHmiState = HMI_TEMP_SMALL_LOOP;     break; 
-        case '7': currHmiState = HMI_TEMP_BIG_LOOP;       break; 
-        case '8': break; 
-        case '9': break; 
-        case '*': break; 
-        case '#': break; 
+        switch(readKey)
+        {
+          case 'A': lcd.write("A"); break; 
+          case 'B': lcd.write("B"); break; 
+          case 'C': lcd.write("C"); break; 
+          case 'D': lcd.write("D"); break; 
+          case '0': break; 
+          case '1': currHmiState = HMI_TEMP_PRIVOD;         break; 
+          case '2': currHmiState = HMI_TEMP_SPIATOCKA;      break; 
+          case '3': currHmiState = HMI_TEMP_PEC;            break; 
+          case '4': currHmiState = HMI_TEMP_NADRZ_TOP;      break; 
+          case '5': currHmiState = HMI_TEMP_NADRZ_BOT;      break; 
+          case '6': currHmiState = HMI_TEMP_SMALL_LOOP;     break; 
+          case '7': currHmiState = HMI_TEMP_BIG_LOOP;       break; 
+          case '8': break; 
+          case '9': break; 
+          case '*': break; 
+          case '#': break; 
+        }
+        hmiStates[currHmiState].fun_ptr();
+        Serial.println(readKey);
       }
-      hmiStates[currHmiState].fun_ptr();
     } break;
     
     case HMI_TEMP_SPIATOCKA: 
@@ -356,18 +370,18 @@ float hmi_readReqBigLoop(void)
 void hmi_dispTepPrivod(void) // --------- PRIVOD ----------------------
 {
   lcd.clear();
-  lcd.print("[1]Tep.privod");
+  lcd.print(F("[1]Tep.privod"));
   lcd.setCursor(0,1);
-  lcd.print("T=");
+  lcd.print(F("T="));
 
   // Diplay if connected
   if (Temp_isConnected(TEMP_STOVE_OUT) == SENS_CONNECTED)
   {
     lcd.print(Temp_ReadVal(TEMP_STOVE_OUT));
-    lcd.print("C");  
+    lcd.print(F("C"));  
   }
   else
-    lcd.print("Not connected");
+    lcd.print(F("Not connected"));
 }
 
 void hmi_dispTepSpiatokcka(void) // --------- SPIATOCKA ---------------

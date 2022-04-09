@@ -2,7 +2,8 @@
  *  v 1.1 - 10/15/2018
  *    - task.h/.cpp added
  * 
- * 
+ *  V 1.2 - 4/9/2022
+ *    - switch to LCD_I2C display
  * 
  * 
  */
