@@ -6,9 +6,9 @@
  * 
  * 
  */
-#include "hmi.h"
-#include "task.h"
-#include "temp_meas.h"
+#include "src\hmi.h"
+#include "src\task.h"
+#include "src\temp_meas.h"
 
 const int VoutAnalog = A0;
 const int VinAnalog = A1;

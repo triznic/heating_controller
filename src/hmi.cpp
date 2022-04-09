@@ -31,9 +31,9 @@ char hexaKeys[ROWS][COLS] = {  //3D pole s klávesami, jak jsou
 {'7','8','9','C'},  //třetí
 {'*','0','#','D'}}; //a čtvrtý
 
-byte rowPins[ROWS] = {51,50,53,52}; /* piny řádků, dodržujte pořadí odshora dolu,
+byte rowPins[ROWS] = {47, 49, 51, 53}; /* piny řádků, dodržujte pořadí odshora dolu,
  aby 3D pole bylo takové, jaká je klávesnice */
-byte colPins[COLS] = {42,43,40,41}; // piny sloupců, pamatujte na zleva doprava
+byte colPins[COLS] = {39, 41, 43, 45}; // piny sloupců, pamatujte na zleva doprava
 
 Keypad myKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
