@@ -32,9 +32,9 @@ char hexaKeys[ROWS][COLS] = {  //3D pole s klávesami, jak jsou
 {'7','8','9','C'},  //třetí
 {'*','0','#','D'}}; //a čtvrtý
 
-byte rowPins[ROWS] = {47, 49, 51, 53}; /* piny řádků, dodržujte pořadí odshora dolu,
+byte rowPins[ROWS] = {46,48,50,52}; /* piny řádků, dodržujte pořadí odshora dolu,
  aby 3D pole bylo takové, jaká je klávesnice */
-byte colPins[COLS] = {39, 41, 43, 45}; // piny sloupců, pamatujte na zleva doprava
+byte colPins[COLS] = {47,49,51,53}; // piny sloupců, pamatujte na zleva doprava
 
 Keypad myKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
@@ -121,30 +121,26 @@ void hmi_process(void)
     case HMI_TEMP_PRIVOD: 
     {
       readKey = myKeypad.getKey();
-      if (readKey)
+      switch(readKey)
       {
-        switch(readKey)
-        {
-          case 'A': lcd.write("A"); break; 
-          case 'B': lcd.write("B"); break; 
-          case 'C': lcd.write("C"); break; 
-          case 'D': lcd.write("D"); break; 
-          case '0': break; 
-          case '1': currHmiState = HMI_TEMP_PRIVOD;         break; 
-          case '2': currHmiState = HMI_TEMP_SPIATOCKA;      break; 
-          case '3': currHmiState = HMI_TEMP_PEC;            break; 
-          case '4': currHmiState = HMI_TEMP_NADRZ_TOP;      break; 
-          case '5': currHmiState = HMI_TEMP_NADRZ_BOT;      break; 
-          case '6': currHmiState = HMI_TEMP_SMALL_LOOP;     break; 
-          case '7': currHmiState = HMI_TEMP_BIG_LOOP;       break; 
-          case '8': break; 
-          case '9': break; 
-          case '*': break; 
-          case '#': break; 
-        }
-        hmiStates[currHmiState].fun_ptr();
-        Serial.println(readKey);
+        case 'A': lcd.write(readKey); break; 
+        case 'B': lcd.write(readKey); break; 
+        case 'C': lcd.write(readKey); break; 
+        case 'D': lcd.write(readKey); break; 
+        case '0': break; 
+        case '1': currHmiState = HMI_TEMP_PRIVOD;         break; 
+        case '2': currHmiState = HMI_TEMP_SPIATOCKA;      break; 
+        case '3': currHmiState = HMI_TEMP_PEC;            break; 
+        case '4': currHmiState = HMI_TEMP_NADRZ_TOP;      break; 
+        case '5': currHmiState = HMI_TEMP_NADRZ_BOT;      break; 
+        case '6': currHmiState = HMI_TEMP_SMALL_LOOP;     break; 
+        case '7': currHmiState = HMI_TEMP_BIG_LOOP;       break; 
+        case '8': break; 
+        case '9': break; 
+        case '*': break; 
+        case '#': break; 
       }
+      hmiStates[currHmiState].fun_ptr();
     } break;
     
     case HMI_TEMP_SPIATOCKA: 
@@ -285,16 +281,16 @@ void hmi_process(void)
                   currHmiState = HMI_TEMP_SMALL_LOOP; 
                   EEPROM.put(TEMP_REQ_SMALL_LOOP_ADD,reqSmallLoop);
                   break; 
-        case '0': lcd.write("0"); inStr += readKey; break; 
-        case '1': lcd.write("1"); inStr += readKey; break; 
-        case '2': lcd.write("2"); inStr += readKey; break; 
-        case '3': lcd.write("3"); inStr += readKey; break; 
-        case '4': lcd.write("4"); inStr += readKey; break; 
-        case '5': lcd.write("5"); inStr += readKey; break; 
-        case '6': lcd.write("6"); inStr += readKey; break; 
-        case '7': lcd.write("7"); inStr += readKey; break; 
-        case '8': lcd.write("8"); inStr += readKey; break; 
-        case '9': lcd.write("9"); inStr += readKey; break; 
+        case '0': lcd.write(readKey); inStr += readKey; break; 
+        case '1': lcd.write(readKey); inStr += readKey; break; 
+        case '2': lcd.write(readKey); inStr += readKey; break; 
+        case '3': lcd.write(readKey); inStr += readKey; break; 
+        case '4': lcd.write(readKey); inStr += readKey; break; 
+        case '5': lcd.write(readKey); inStr += readKey; break; 
+        case '6': lcd.write(readKey); inStr += readKey; break; 
+        case '7': lcd.write(readKey); inStr += readKey; break; 
+        case '8': lcd.write(readKey); inStr += readKey; break; 
+        case '9': lcd.write(readKey); inStr += readKey; break; 
         case '*': break; 
         case '#': break; 
       }
@@ -338,16 +334,16 @@ void hmi_process(void)
                   currHmiState = HMI_TEMP_BIG_LOOP; 
                   EEPROM.put(TEMP_REQ_BIG_LOOP_ADD,reqBigLoop);
                   break; 
-        case '0': lcd.write("0"); inStr += readKey; break; 
-        case '1': lcd.write("1"); inStr += readKey; break; 
-        case '2': lcd.write("2"); inStr += readKey; break; 
-        case '3': lcd.write("3"); inStr += readKey; break; 
-        case '4': lcd.write("4"); inStr += readKey; break; 
-        case '5': lcd.write("5"); inStr += readKey; break; 
-        case '6': lcd.write("6"); inStr += readKey; break; 
-        case '7': lcd.write("7"); inStr += readKey; break; 
-        case '8': lcd.write("8"); inStr += readKey; break; 
-        case '9': lcd.write("9"); inStr += readKey; break; 
+        case '0': lcd.write(readKey); inStr += readKey; break; 
+        case '1': lcd.write(readKey); inStr += readKey; break; 
+        case '2': lcd.write(readKey); inStr += readKey; break; 
+        case '3': lcd.write(readKey); inStr += readKey; break; 
+        case '4': lcd.write(readKey); inStr += readKey; break; 
+        case '5': lcd.write(readKey); inStr += readKey; break; 
+        case '6': lcd.write(readKey); inStr += readKey; break; 
+        case '7': lcd.write(readKey); inStr += readKey; break; 
+        case '8': lcd.write(readKey); inStr += readKey; break; 
+        case '9': lcd.write(readKey); inStr += readKey; break; 
         case '*': break; 
         case '#': break; 
       }
