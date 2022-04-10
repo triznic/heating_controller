@@ -94,19 +94,6 @@ void hmi_init(void)
   delay(800);
   lcd.clear();
   
-  // while(1)
-  // {
-  //   readKey = myKeypad.getKey();
-
-    
-    
-  //   if (readKey){
-  //     Serial.println(readKey);
-  //     lcd.clear();
-  //     lcd.print(readKey);
-  //   }
-  // }
-
   currHmiState = (HMIstates_E)0;
   hmiStates[currHmiState].fun_ptr();
 

@@ -49,7 +49,7 @@ void setup() {
   
 
   hmi_init();
-  Task_Add(hmi_process, 100,  true);
+  Task_Add(hmi_process, 1000,  true);
 }
 
 void loop() {
